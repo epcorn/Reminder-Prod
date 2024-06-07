@@ -9,6 +9,7 @@ import morgan from "morgan";
 
 import userRoutes from "./routes/userRoute.js";
 import reminderRoutes from "./routes/reminderRoutes.js";
+import { reminderWithinThirtyDays } from "./controllers/reminderController.js";
 
 dotenv.config();
 const app = express();
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
 app.use("/api/user", userRoutes);
 app.use("/api/reminder", reminderRoutes);
+app.use("/mondayMorning", reminderWithinThirtyDays);
 
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();

@@ -56,38 +56,6 @@ export const approveUser = async (req, res) => {
   }
 };
 
-// export const verifyUser = async (req, res) => {
-//   const { verificationToken, email, password, emailList } = req.body;
-//   try {
-//     if (!verificationToken && !email && !password && !emailList)
-//       return res.status(400).json({ msg: "Please provide all values" });
-
-//     const user = await User.findOne({ email });
-//     if (!user) return res.status(401).json({ msg: "Verification Failed" });
-
-//     if (!user.password) {
-//       if (password) {
-//         if (verificationToken !== user.verificationToken)
-//           return res.status(401).json({ msg: "Verification Failed" });
-//         user.isVerified = true;
-//         user.verificationToken = null;
-//         user.password = password;
-//       } else return res.status(400).json({ msg: "Please provide all values" });
-//     }
-
-//     emailList.split(",").map((email) => user.emailList.push(email));
-
-//     await user.save();
-
-//     return res
-//       .status(200)
-//       .json({ msg: "Password has been set, please login." });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({ msg: "Server error, try again later." });
-//   }
-// };
-
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -193,3 +161,35 @@ export const allUsers = async (req, res) => {
     return res.status(500).json({ msg: "Server error, try again later." });
   }
 };
+
+// export const verifyUser = async (req, res) => {
+//   const { verificationToken, email, password, emailList } = req.body;
+//   try {
+//     if (!verificationToken && !email && !password && !emailList)
+//       return res.status(400).json({ msg: "Please provide all values" });
+
+//     const user = await User.findOne({ email });
+//     if (!user) return res.status(401).json({ msg: "Verification Failed" });
+
+//     if (!user.password) {
+//       if (password) {
+//         if (verificationToken !== user.verificationToken)
+//           return res.status(401).json({ msg: "Verification Failed" });
+//         user.isVerified = true;
+//         user.verificationToken = null;
+//         user.password = password;
+//       } else return res.status(400).json({ msg: "Please provide all values" });
+//     }
+
+//     emailList.split(",").map((email) => user.emailList.push(email));
+
+//     await user.save();
+
+//     return res
+//       .status(200)
+//       .json({ msg: "Password has been set, please login." });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ msg: "Server error, try again later." });
+//   }
+// };

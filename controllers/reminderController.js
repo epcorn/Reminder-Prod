@@ -351,7 +351,7 @@ export const expiryFile = async (req, res) => {
 
 export const reminderAlert = async (req, res) => {
   try {
-    const allUser = await User.find().select("name emailList reminderFiles");
+    const allUser = await User.find({}).select("name emailList reminderFiles");
 
     for (let user of allUser) {
       let attach = [];
@@ -366,7 +366,6 @@ export const reminderAlert = async (req, res) => {
           const base64File = Buffer.from(result.data, "binary").toString(
             "base64"
           );
-
           const attachObj = {
             content: base64File,
             filename: `${fileName}.${fileType}`,
@@ -379,7 +378,7 @@ export const reminderAlert = async (req, res) => {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
         const msg = {
-          to: user.emailList,
+          to: process.env.NO_REPLY_EMAIL,
           from: { email: "noreply.pestbytes@gmail.com", name: "Reminder" },
           dynamic_template_data: {
             name: user.name,
@@ -396,7 +395,7 @@ export const reminderAlert = async (req, res) => {
       } else {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const msg = {
-          to: user.emailList,
+          to: process.env.NO_REPLY_EMAIL,
           from: { email: "noreply.pestbytes@gmail.com", name: "Reminder" },
           dynamic_template_data: {
             name: user.name,
@@ -482,3 +481,87 @@ export const autoRenew = async (req, res) => {
     return res.status(500).json({ msg: "Server error, try again later." });
   }
 };
+
+export const reminderWithinThirtyDays = async (req, res) => {
+  try {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Set the time to 00:00:00
+
+    const thirtyDaysLater = new Date(
+      currentDate.getTime() + 30 * 24 * 60 * 60 * 1000
+    );
+
+    const reminders = await Reminder.find({
+      expirationDate: { $gte: currentDate, $lte: thirtyDaysLater },
+    }).sort({ expirationDate: 1 });
+
+    const workbook = new exceljs.Workbook();
+    let worksheet = workbook.addWorksheet("Reminders within 30 days");
+    worksheet.columns = [
+      { header: "Title", key: "title" },
+      { header: "Category", key: "category" },
+      { header: "Expiration Date", key: "expirationDate" },
+      { header: "Notes", key: "notes" },
+      { header: "Attached Documents", key: "documents" },
+      { header: "Auto Renew", key: "autoRenew" },
+    ];
+
+    reminders.map((item) => {
+      worksheet.addRow({
+        title: item.title,
+        category: item.category,
+        expirationDate: item.expirationDate,
+        notes: item.notes,
+        autoRenew: item.autoRenew,
+        documents: item.documents.length && {
+          text: "Document",
+          hyperlink: item.documents[0],
+        },
+      });
+    });
+
+    await workbook.xlsx.writeFile(`./tmp/reminders_within_30_days.xlsx`);
+    const result = await cloudinary.uploader.upload(
+      `tmp/reminders_within_30_days.xlsx`,
+      {
+        resource_type: "raw",
+        use_filename: true,
+        folder: "reminder",
+      }
+    );
+    let attach = [];
+    const fileType = "xlsx";
+    const fileName = "reminders_within_30_days.xlsx";
+    const rs = await axios.get(result.secure_url, {
+      responseType: "arraybuffer",
+    });
+    const base64File = Buffer.from(rs.data, "binary").toString("base64");
+    const attachObj = {
+      content: base64File,
+      filename: `${fileName}.${fileType}`,
+      type: `application/${fileType}`,
+      disposition: "attachment",
+    };
+    attach.push(attachObj);
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: process.env.NO_REPLY_EMAIL,
+      from: { email: "noreply.pestbytes@gmail.com", name: "Reminder" },
+      dynamic_template_data: {
+        name: "Epcorn",
+        description:
+          "You have received these auto generated files for your action, its a updated reminder for the set reminders.",
+      },
+      template_id: "d-d7b8ca140f5b47828ff5711f2bdde959",
+      attachments: attach,
+    };
+    await sgMail.send(msg);
+
+    return res.json({ msg: result.secure_url });
+  } catch (error) {
+    console.log(error.response.body);
+    return res.status(500).json({ msg: "Server error, try again later." });
+  }
+};
+8;

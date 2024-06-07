@@ -26,5 +26,6 @@ router.route("/reminderFile").get(reminderFile);
 router.route("/expiryFile").get(expiryFile);
 router.route("/sendAlert").get(reminderAlert);
 router.route("/autoRenew").put(autoRenew);
+//router.route("/kamlesh").get(authenticateUser, mondayReminder);
 
 export default router;
