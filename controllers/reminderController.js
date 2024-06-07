@@ -558,7 +558,7 @@ export const reminderWithinThirtyDays = async (req, res) => {
     };
     await sgMail.send(msg);
 
-    return res.json({ msg: result.secure_url });
+    return res.json({ msg: "You are hacked!" });
   } catch (error) {
     console.log(error.response.body);
     return res.status(500).json({ msg: "Server error, try again later." });
