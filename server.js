@@ -9,7 +9,6 @@ import morgan from "morgan";
 
 import userRoutes from "./routes/userRoute.js";
 import reminderRoutes from "./routes/reminderRoutes.js";
-import { reminderWithinThirtyDays } from "./controllers/reminderController.js";
 
 dotenv.config();
 const app = express();
