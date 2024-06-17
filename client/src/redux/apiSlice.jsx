@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { toast } from "react-toastify";
 import { logoutUser } from "./authSlice";
 
-const baseQuery = fetchBaseQuery({ baseUrl: "/" });
+const baseQuery = fetchBaseQuery({ baseUrl: "https://www.reminder.sat9.in" });
 const authBaseQuery = async (args, api, option) => {
   const res = await baseQuery(args, api, option);
   if (res.error && res.error.status === 401) {

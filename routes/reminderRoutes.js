@@ -10,7 +10,6 @@ import {
   reminderFile,
   reminderStats,
   singleReminder,
-  reminderWithinThirtyDays,
 } from "../controllers/reminderController.js";
 import { authenticateUser } from "../middleware/authMiddleware.js";
 const router = express.Router();
@@ -27,6 +26,5 @@ router.route("/reminderFile").get(reminderFile);
 router.route("/expiryFile").get(expiryFile);
 router.route("/sendAlert").get(reminderAlert);
 router.route("/autoRenew").put(autoRenew);
-router.route("/mondayMorning").get(reminderWithinThirtyDays);
 
 export default router;
