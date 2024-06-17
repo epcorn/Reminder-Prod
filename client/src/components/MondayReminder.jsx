@@ -6,7 +6,7 @@ function MondayReminder() {
   useEffect(() => {
     async function fn() {
       try {
-        await useMondayReminderQuery();
+        await mondayReminder().unwrap();
       } catch (error) {
         console.log(error);
       }
