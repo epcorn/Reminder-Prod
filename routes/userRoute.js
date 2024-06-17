@@ -12,6 +12,7 @@ import {
   updateUser,
 } from "../controllers/userController.js";
 import { authenticateUser, isAdmin } from "../middleware/authMiddleware.js";
+import { reminderWithinThirtyDays } from "../controllers/reminderController.js";
 
 router
   .route("/register")
@@ -23,5 +24,6 @@ router.route("/allUsers").get(authenticateUser, isAdmin, allUsers);
 router.route("/categories").get(authenticateUser, allCategories);
 router.route("/updateUser").patch(authenticateUser, updateUser);
 router.route("/profile/:id").patch(authenticateUser, addCategory);
+router.route("/mondayMorning", reminderWithinThirtyDays);
 
 export default router;

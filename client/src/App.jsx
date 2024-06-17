@@ -35,7 +35,8 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
-        <Route index={true} path="/login/:id" element={<Login />} />
+        <Route index={true} path="/" element={<Login />} />
+        <Route path="/monday" element={<MondayReminder />} />
         <Route
           path="/dashboard"
           element={
@@ -69,7 +70,7 @@ function App() {
           }
         />
 
-        <Route path="*" element={<PageNotFound />} />
+        {/**<Route path="*" element={<PageNotFound />} /> */}
       </Route>
     )
   );
