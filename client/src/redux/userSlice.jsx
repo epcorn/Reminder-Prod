@@ -57,6 +57,13 @@ export const userSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
       providesTags: ["Users"],
     }),
+    mondayReminder: builder.query({
+      query: () => ({
+        url: `/api/reminder/mondayMorning`,
+      }),
+      providesTags: ["Users"],
+      keepUnusedDataFor: 5,
+    }),
   }),
 });
 
@@ -69,4 +76,5 @@ export const {
   useAllCategoriesQuery,
   useAllUsersQuery,
   useLogoutMutation,
+  useMondayReminderQuery,
 } = userSlice;
