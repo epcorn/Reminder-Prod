@@ -28,7 +28,6 @@ if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
 app.use("/api/user", userRoutes);
 app.use("/api/reminder", reminderRoutes);
-app.use("/api/mondayMorning", reminderWithinThirtyDays);
 
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();

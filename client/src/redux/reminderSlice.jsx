@@ -44,6 +44,13 @@ export const reminderSlice = apiSlice.injectEndpoints({
       providesTags: ["Reminders"],
       keepUnusedDataFor: 5,
     }),
+    mondayReminder: builder.query({
+      query: () => ({
+        url: `/api/reminder/mondayMorning`,
+      }),
+      providesTags: ["Reminders"],
+      keepUnusedDataFor: 5,
+    }),
   }),
 });
 
@@ -54,4 +61,5 @@ export const {
   useUpdateReminderMutation,
   useDeleteReminderMutation,
   useReminderStatsQuery,
+  useMondayReminderQuery,
 } = reminderSlice;

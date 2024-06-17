@@ -69,7 +69,7 @@ function App() {
           }
         />
 
-        {/**<Route path="*" element={<PageNotFound />} /> */}
+        <Route path="*" element={<PageNotFound />} />
       </Route>
     )
   );
