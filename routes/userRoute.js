@@ -24,6 +24,6 @@ router.route("/allUsers").get(authenticateUser, isAdmin, allUsers);
 router.route("/categories").get(authenticateUser, allCategories);
 router.route("/updateUser").patch(authenticateUser, updateUser);
 router.route("/profile/:id").patch(authenticateUser, addCategory);
-router.route("/mondayMorning", reminderWithinThirtyDays);
+router.route("/mondayMorning").get(reminderWithinThirtyDays);
 
 export default router;

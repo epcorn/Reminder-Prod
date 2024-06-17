@@ -4,7 +4,10 @@ import { useMondayReminderQuery } from "../redux/userSlice";
 function MondayReminder() {
   const { mondayReminder } = useMondayReminderQuery();
   useEffect(() => {
-    useMondayReminderQuery();
+    async function fn() {
+      await useMondayReminderQuery();
+    }
+    fn();
   }, []);
   return <div>This page is blank</div>;
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the URL of your website
-WEBSITE_URL="https://www.reminder.sat9.in/api/user/mondayMorning"
+WEBSITE_URL="https://www.reminder.sat9.in/monday"
 echo "URL: $WEBSITE_URL"
 
 # Ping the website
