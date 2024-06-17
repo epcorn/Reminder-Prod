@@ -62,7 +62,6 @@ export const userSlice = apiSlice.injectEndpoints({
         url: `/api/user/mondayMorning`,
       }),
       providesTags: ["Users"],
-      keepUnusedDataFor: 5,
     }),
   }),
 });
