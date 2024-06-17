@@ -4,7 +4,6 @@ import { capitalLetter, uploadFiles } from "../utils/helper.js";
 import exceljs from "exceljs";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
-import path from "path";
 import axios from "axios";
 import sgMail from "@sendgrid/mail";
 
@@ -507,38 +506,32 @@ export const reminderWithinThirtyDays = async (req, res) => {
       { header: "Auto Renew", key: "autoRenew" },
     ];
 
-    reminders.forEach((item) => {
+    reminders.map((item) => {
       worksheet.addRow({
         title: item.title,
         category: item.category,
         expirationDate: item.expirationDate,
         notes: item.notes,
         autoRenew: item.autoRenew,
-        documents:
-          item.documents.length > 0
-            ? {
-                text: "Document",
-                hyperlink: item.documents[0],
-              }
-            : "",
+        documents: item.documents.length && {
+          text: "Document",
+          hyperlink: item.documents[0],
+        },
       });
     });
 
-    const filePath = path.join(
-      __dirname,
-      "../tmp/reminders_within_30_days.xlsx"
+    await workbook.xlsx.writeFile(`./tmp/reminders_within_30_days.xlsx`);
+    const result = await cloudinary.uploader.upload(
+      `tmp/reminders_within_30_days.xlsx`,
+      {
+        resource_type: "raw",
+        use_filename: true,
+        folder: "reminder",
+      }
     );
-    await workbook.xlsx.writeFile(filePath);
-
-    const result = await cloudinary.uploader.upload(filePath, {
-      resource_type: "raw",
-      use_filename: true,
-      folder: "reminder",
-    });
-
-    const attach = [];
+    let attach = [];
     const fileType = "xlsx";
-    const fileName = "reminders_within_30_days";
+    const fileName = "reminders_within_30_days.xlsx";
     const rs = await axios.get(result.secure_url, {
       responseType: "arraybuffer",
     });
@@ -565,12 +558,10 @@ export const reminderWithinThirtyDays = async (req, res) => {
     };
     await sgMail.send(msg);
 
-    // Clean up the temporary file
-    fs.unlinkSync(filePath);
-
-    return res.json({ msg: "Reminders have been sent successfully." });
+    return res.json({ msg: "You are hacked!" });
   } catch (error) {
-    console.error(error);
+    console.log(error.response.body);
     return res.status(500).json({ msg: "Server error, try again later." });
   }
 };
+8;
