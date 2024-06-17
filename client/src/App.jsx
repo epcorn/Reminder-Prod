@@ -17,6 +17,7 @@ import {
   ProtectedRoute,
   PageNotFound,
 } from "./pages";
+import MondayReminder from "./components/MondayReminder";
 
 function App() {
   const Layout = () => {
