@@ -2,18 +2,17 @@ import { useEffect } from "react";
 import { useMondayReminderQuery } from "../redux/userSlice";
 
 function MondayReminder() {
-  const { mondayReminder } = useMondayReminderQuery();
+  const { data, error, isLoading, refetch } = useMondayReminderQuery();
+
   useEffect(() => {
-    async function fn() {
-      try {
-        await mondayReminder().unwrap();
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fn();
-  }, []);
-  return <div>This page is blank</div>;
+    // Refetch data on component mount
+    refetch();
+  }, [refetch]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  return <div>This page is blank. Data: {JSON.stringify(data)}</div>;
 }
 
 export default MondayReminder;
