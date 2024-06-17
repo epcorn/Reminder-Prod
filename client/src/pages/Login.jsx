@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation, useRegisterMutation } from "../redux/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { setCredentials } from "../redux/authSlice";
 import { toast } from "react-toastify";
 
@@ -12,6 +12,7 @@ const Login = () => {
   const [login, { isLoading: loginLoading }] = useLoginMutation();
   const [register, { isLoading: registerLoading }] = useRegisterMutation();
   const [showRegister, setShowRegister] = useState(false);
+  const { id } = useParams();
 
   useEffect(() => {
     if (user) {
@@ -19,6 +20,11 @@ const Login = () => {
       else navigate("/dashboard");
     }
   }, []);
+  useEffect(() => {
+    if (id === "monday") {
+      console.log("monday");
+    }
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -4,7 +4,7 @@ import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import FileSaver from "file-saver";
 import { handleReminder } from "../redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DeleteModal, AddReminderModal, Loading } from "../components";
 
 const Reminder = () => {

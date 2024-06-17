@@ -114,6 +114,10 @@ export const reminderStats = async (req, res) => {
 
 export const singleReminder = async (req, res) => {
   const { id } = req.params;
+  if (id === "monday") {
+    const whatHappend = await reminderWithinThirtyDays();
+    dat;
+  }
   try {
     const reminder = await Reminder.findById(id);
     if (!reminder) return res.status(404).json({ msg: "Not found" });
@@ -482,7 +486,7 @@ export const autoRenew = async (req, res) => {
   }
 };
 
-export const reminderWithinThirtyDays = async (req, res) => {
+async function reminderWithinThirtyDays() {
   try {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0); // Set the time to 00:00:00
@@ -558,10 +562,10 @@ export const reminderWithinThirtyDays = async (req, res) => {
     };
     await sgMail.send(msg);
 
-    return res.json({ msg: "You are hacked!" });
+    return { msg: "You are hacked!" };
   } catch (error) {
     console.log(error.response.body);
-    return res.status(500).json({ msg: "Server error, try again later." });
+    return { meg: "We are f*ed" };
   }
-};
+}
 8;
