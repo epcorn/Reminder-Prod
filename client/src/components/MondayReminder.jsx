@@ -5,7 +5,11 @@ function MondayReminder() {
   const { mondayReminder } = useMondayReminderQuery();
   useEffect(() => {
     async function fn() {
-      await useMondayReminderQuery();
+      try {
+        await useMondayReminderQuery();
+      } catch (error) {
+        console.log(error);
+      }
     }
     fn();
   }, []);
